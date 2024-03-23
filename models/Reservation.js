@@ -1,33 +1,37 @@
 const mongoose = require("mongoose");
 
-const reservationSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "reservator name missing or incorrect"],
-  },
-  address: {
-    type: String,
-    required: [true, "address missing or incorrect"],
-  },
-  city: {
-    type: String,
-    required: [true, "city missing or incorrect"],
-  },
-  zip: {
-    type: String,
-    required: [true, "zip code missing or incorrect"],
-  },
-  country: {
-    type: String,
-    required: [true, "country missing or incorrect"],
-  },
+const reservationInfoSchema = new mongoose.Schema({
   checkin: {
-    type: String,
-    required: [true, "checkin date missing or incorrect"],
+    type: Date,
+    required: [true, "Check-in date is missing or incorrect"],
   },
   checkout: {
+    type: Date,
+    required: [true, "Check-out date is missing or incorrect"],
+  },
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Room",
+    required: [true, "Room information is missing or incorrect"],
+  },
+});
+
+const reservationSchema = new mongoose.Schema({
+  code: {
     type: String,
-    required: [true, "checkout date missing or incorrect"],
+    required: [true, "Reservation code is missing or incorrect"],
+  },
+  name: {
+    type: String,
+    required: [true, "Name is missing or incorrect"],
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  reservation_information: {
+    type: reservationInfoSchema,
+    required: true,
   },
 });
 

@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
-const mongooseAutoIncrement = require("mongoose-auto-increment");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-mongooseAutoIncrement.initialize(mongoose.connection); // suconnectina prijungta db instancija
 const roomSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: [true, "room id missing or incorrect"],
-  },
   number: {
     type: Number,
     required: [true, "room number missing or incorrect"],
@@ -47,11 +42,6 @@ const roomSchema = new mongoose.Schema({
   ],
 });
 
-roomSchema.plugin(mongooseAutoIncrement.plugin, {
-  model: "Room",
-  field: "id",
-  startAt: 1,
-  incrementBy: 1,
-});
+roomSchema.plugin(AutoIncrement, { inc_field: "id" });
 
 module.exports = mongoose.model("Room", roomSchema);

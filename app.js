@@ -11,6 +11,11 @@ app.set("port", port);
 
 connectToDB();
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server started running at http://localhost:${process.env.PORT}`);
+// routing
+
+app.use("/api/v1/rooms", require("./routes/roomRoutes"));
+app.use("/api/v1/reservations", require("./routes/reservationRoutes"));
+
+app.listen(port, () => {
+  console.log(`Server started running at http://localhost:${port}`);
 });
