@@ -12,7 +12,7 @@ const { roomReservation } = require("../controllers/reservationController");
 router.get("/", getAllRooms);
 router.get("/:id", getSingleRoom);
 router.get(
-  "/availability/checkin/:checkin/checkout/:checkout",
+  "/availability/checkin/:checkInDate/checkout/:checkOutDate", // BUTINAI SUZIURETI NAMINGA (checkInDate....)
   getRoomAvailability,
 ); // kad pratestuoti reikia pirma padaryti reservation controlleri
 router.post("/:id/reservation", roomReservation);

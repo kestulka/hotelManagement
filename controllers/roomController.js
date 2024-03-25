@@ -2,7 +2,7 @@ const Room = require("../models/Room");
 
 async function getAllRooms(req, res) {
   try {
-    const rooms = await Room.find().sort({ name: 1 }); // Rooms are sorted by their name in ascending order
+    const rooms = await Room.find().sort({ name: 1 });
     res.json(rooms);
   } catch (error) {
     res.status(500).json({ message: error.message });

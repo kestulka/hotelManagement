@@ -40,6 +40,10 @@ const roomSchema = new mongoose.Schema({
       ref: "Reservation",
     },
   ],
+  availability: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 roomSchema.plugin(AutoIncrement, { inc_field: "id" });
