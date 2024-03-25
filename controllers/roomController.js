@@ -23,4 +23,38 @@ async function getSingleRoom(req, res) {
   }
 }
 
-module.exports = { getAllRooms, getSingleRoom };
+async function getRoomAvailability(req, res) {
+  try {
+    const { checkInDate, checkOutDate } = req.params;
+
+    if (!checkInDate) {
+      return res.status(400).json({
+        message: "Bad checkin date format or date not provided",
+      });
+    }
+    if (!checkOutDate) {
+      return res.status(400).json({
+        message: "Bad checkout date format or date not provided",
+      });
+    }
+
+    const availability = await Room.find({
+      "reservations.checkin": { $not: { $lte: new Date(checkInDate) } },
+      "reservations.checkout": { $not: { $lte: new Date(checkOutDate) } },
+    });
+
+    const roomArr = availability.map((room) => ({
+      id: room.id,
+      number: room.number,
+      availability: true,
+    }));
+
+    res.status(200).json({ roomArr });
+  } catch (error) {
+    return res.status(404).json({
+      message: " Returned if dates are provided in incorrect format.",
+    });
+  }
+}
+
+module.exports = { getAllRooms, getSingleRoom, getRoomAvailability };
