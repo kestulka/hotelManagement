@@ -1,8 +1,19 @@
 const Reservation = require("../models/Reservation");
 const Room = require("../models/Room");
 
+function generateRandomString() {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 async function roomReservation(req, res) {
   try {
+    const reservationCode = generateRandomString();
+
     const reservation = await Reservation.create({
       name: req.body.name,
       address: req.body.address,
@@ -11,6 +22,7 @@ async function roomReservation(req, res) {
       country: req.body.country,
       checkin: req.body.checkin,
       checkout: req.body.checkout,
+      code: reservationCode,
     });
 
     const room = await Room.findById(req.params.id);
@@ -21,7 +33,10 @@ async function roomReservation(req, res) {
       });
     }
 
-    room.reservations.push(reservation._id);
+    room.reservations.push({
+      _id: reservation._id,
+      code: reservationCode,
+    });
     await room.save();
     res.status(201).json(reservation);
   } catch (error) {

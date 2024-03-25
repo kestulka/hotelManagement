@@ -29,6 +29,11 @@ const reservationSchema = new mongoose.Schema({
     type: String,
     required: [true, "checkout date missing or incorrect"],
   },
+  code: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Reservation", reservationSchema);
