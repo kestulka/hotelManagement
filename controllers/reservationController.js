@@ -53,4 +53,25 @@ async function roomReservation(req, res) {
   }
 }
 
-module.exports = { roomReservation };
+async function getReservations(req, res) {
+  const { name, code } = req.body;
+  try {
+    if (!name || !code) {
+      return res.status(400).json({
+        message: "name and code fields are required to fill",
+      });
+    }
+
+    const reservations = await Reservation.find({
+      name: name,
+      code: code,
+    }).sort({ checkin: 1 });
+    res.status(200).json(reservations);
+  } catch (error) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+}
+
+module.exports = { roomReservation, getReservations };
