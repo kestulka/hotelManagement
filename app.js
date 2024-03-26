@@ -1,22 +1,35 @@
 require("dotenv").config();
 const express = require("express");
-const connectToDB = require("./config/db");
+const http = require("http");
+const cors = require("cors");
+
+const connectToDB = require("./src/config/db");
+
+connectToDB();
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+app.options("*", cors());
+app.use(express.urlencoded({ extended: false }));
 
-const port = process.env.PORT || 1111;
+const port = process.env.PORT || 3333;
 app.set("port", port);
 
-connectToDB();
+// routes
 
-// routing
+app.use("/api/v1/rooms", require("./src/routes/roomRoutes"));
+app.use("/api/v1/reservations", require("./src/routes/reservationRoutes"));
 
-app.use("/api/v1/rooms", require("./routes/roomRoutes"));
+app.use(express.static(__dirname + "/src"));
 
-app.use("/api/v1/reservations", require("./routes/reservationRoutes"));
+app.get("/module-f", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server started running at http://localhost:${process.env.PORT}`);
+const server = http.createServer(app);
+
+server.listen(port, () => {
+  console.log(`Server started running at http://localhost:${port}`);
 });
