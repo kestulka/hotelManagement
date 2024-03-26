@@ -1,4 +1,4 @@
-const Room = require("../src/routes/models/Room");
+const Room = require("../models/Room");
 
 async function getAllRooms(req, res) {
   try {

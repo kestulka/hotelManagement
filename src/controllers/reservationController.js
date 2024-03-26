@@ -1,5 +1,5 @@
-const Reservation = require("../src/routes/models/Reservation");
-const Room = require("../src/routes/models/Room");
+const Reservation = require("../models/Reservation");
+const Room = require("../models/Room");
 
 function generateRandomString() {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
